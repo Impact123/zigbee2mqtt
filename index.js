@@ -11,6 +11,8 @@ let unsolicitedStop = false;
 // csv in minutes, default: 1min, 5min, 15min, 30min, 60min
 let watchdogDelays = [2000, 60000, 300000, 900000, 1800000, 3600000];
 
+process.title = `${process.title}: z2m`;
+
 if (process.env.Z2M_WATCHDOG != null && process.env.Z2M_WATCHDOG !== "default") {
     if (/^\d+(.\d+)?(,\d+(.\d+)?)*$/.test(process.env.Z2M_WATCHDOG)) {
         watchdogDelays = process.env.Z2M_WATCHDOG.split(",").map((v) => Number.parseFloat(v) * 60000);
