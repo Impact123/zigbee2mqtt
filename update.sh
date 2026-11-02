@@ -23,6 +23,13 @@ if [ "$OSNAME" == "FreeBSD" ]; then
         service zigbee2mqtt stop
         NEED_RESTART=1
     fi
+elif command -v rc-service >/dev/null; then
+    echo "Checking Zigbee2MQTT status..."
+    if rc-service zigbee2mqtt status >/dev/null; then
+        echo "Stopping Zigbee2MQTT..."
+        sudo rc-service zigbee2mqtt stop
+        NEED_RESTART=1
+    fi
 else
     if which systemctl 2> /dev/null > /dev/null; then
         echo "Checking Zigbee2MQTT status..."
@@ -57,6 +64,8 @@ if [ $NEED_RESTART -eq 1 ]; then
     echo "Starting Zigbee2MQTT..."
     if [ "$OSNAME" == "FreeBSD" ]; then
         service zigbee2mqtt start
+    elif command -v rc-service >/dev/null; then
+        sudo rc-service zigbee2mqtt start
     else
         sudo systemctl start zigbee2mqtt
     fi
